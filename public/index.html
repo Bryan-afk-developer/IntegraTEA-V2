@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntegraTEA Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sección de Login (sin cambios) -->
+    <section id="login-section" class="login-section">
+        <div class="login-card">
+            <h1>IntegraTEA Admin</h1>
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña:</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <p id="login-error" class="error-message hidden"></p>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sección del Panel Administrativo -->
+    <section id="admin-panel-section" class="admin-panel-section hidden">
+        <!-- Header (sin cambios en estructura, solo el texto dinámico) -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h1 class="header-title">IntegraTEA Admin</h1>
+            </div>
+            <div class="header-right">
+                <span id="welcome-user" class="welcome-message">Bienvenido, Admin</span>
+                <button id="logout-button" class="btn btn-danger">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-main-wrapper">
+            <!-- Sidebar (cambio en los enlaces) -->
+            <aside id="sidebar" class="admin-sidebar">
+                <nav>
+                    <a href="#dashboard" class="sidebar-link" id="dashboard-link">Dashboard</a>
+                    <a href="#users" class="sidebar-link" id="users-management-link">Gestionar Usuarios</a> <!-- CAMBIO: Nombre del enlace -->
+                    <a href="#activities" class="sidebar-link" id="activities-link">Actividades</a> <!-- NUEVO ENLACE -->
+                </nav>
+            </aside>
+
+            <!-- Área de Contenido Principal (sin cambios en estructura) -->
+            <main id="main-content" class="admin-content">
+                <h2 class="content-loading-message">Cargando...</h2>
+            </main>
+        </div>
+
+        <!-- Pie de Página (sin cambios) -->
+        <footer class="admin-footer">
+            &copy; 2023 IntegraTEA. Todos los derechos reservados.
+        </footer>
+
+        <!-- Modal General (sin cambios) -->
+        <div id="crud-modal" class="crud-modal-overlay hidden">
+            <div class="crud-modal-content">
+                <button id="close-modal" class="crud-modal-close-btn">&times;</button>
+                <h3 id="modal-title" class="crud-modal-title"></h3>
+                <div id="modal-body" class="crud-modal-body">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Archivos JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/users-management.js"></script> <!-- Mantendremos este nombre por ahora, pero su contenido será más genérico -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Carlos",
+    "lastName": "Rivero",
+    "email": "carlos.test2@correo.com",
+    "password": "unaContraseñaSegura123",
+    "school": "Mi Escuela"
+  }' \
+  http://localhost:5001/api/educators
