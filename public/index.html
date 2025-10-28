@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- Sección de Login (sin cambios) -->
+    <!-- Sección de Login -->
     <section id="login-section" class="login-section">
         <div class="login-card">
             <h1>IntegraTEA Admin</h1>
@@ -30,7 +30,7 @@
 
     <!-- Sección del Panel Administrativo -->
     <section id="admin-panel-section" class="admin-panel-section hidden">
-        <!-- Header (sin cambios en estructura, solo el texto dinámico) -->
+        <!-- Header -->
         <header class="admin-header">
             <div class="header-left">
                 <button id="sidebar-toggle" class="sidebar-toggle">
@@ -47,27 +47,27 @@
         </header>
 
         <div class="admin-main-wrapper">
-            <!-- Sidebar (cambio en los enlaces) -->
+            <!-- Sidebar -->
             <aside id="sidebar" class="admin-sidebar">
                 <nav>
                     <a href="#dashboard" class="sidebar-link" id="dashboard-link">Dashboard</a>
-                    <a href="#users" class="sidebar-link" id="users-management-link">Gestionar Usuarios</a> <!-- CAMBIO: Nombre del enlace -->
-                    <a href="#activities" class="sidebar-link" id="activities-link">Actividades</a> <!-- NUEVO ENLACE -->
+                    <a href="#users" class="sidebar-link" id="users-management-link">Gestionar Usuarios</a>
+                    <a href="#activities" class="sidebar-link" id="activities-link">Actividades</a>
                 </nav>
             </aside>
 
-            <!-- Área de Contenido Principal (sin cambios en estructura) -->
+            <!-- Área de Contenido Principal -->
             <main id="main-content" class="admin-content">
                 <h2 class="content-loading-message">Cargando...</h2>
             </main>
         </div>
 
-        <!-- Pie de Página (sin cambios) -->
+        <!-- Pie de Página -->
         <footer class="admin-footer">
             &copy; 2023 IntegraTEA. Todos los derechos reservados.
         </footer>
 
-        <!-- Modal General (sin cambios) -->
+        <!-- Modal General -->
         <div id="crud-modal" class="crud-modal-overlay hidden">
             <div class="crud-modal-content">
                 <button id="close-modal" class="crud-modal-close-btn">&times;</button>
@@ -81,7 +81,10 @@
     <!-- Archivos JavaScript -->
     <script src="js/utils.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/users-management.js"></script> <!-- Mantendremos este nombre por ahora, pero su contenido será más genérico -->
+    <script src="js/users-management.js"></script>
+    <!-- NUEVA LÍNEA: Cargar el script de gestión de actividades -->
+    <script src="js/activities-management.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
+

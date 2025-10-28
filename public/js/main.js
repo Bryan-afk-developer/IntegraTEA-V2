@@ -7,14 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
 
-    // Referencias a los enlaces del sidebar para manejar la clase 'active'
     const dashboardLink = document.getElementById('dashboard-link');
     const usersManagementLink = document.getElementById('users-management-link');
-    const activitiesLink = document.getElementById('activities-link'); // Nuevo enlace
+    const activitiesLink = document.getElementById('activities-link');
 
     function setActiveLink(activeId) {
         [dashboardLink, usersManagementLink, activitiesLink].forEach(link => {
-            if (link) { // Asegurarse de que el elemento existe
+            if (link) {
                 if (link.id === activeId) {
                     link.classList.add('active');
                 } else {
@@ -43,23 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="content-card">
                 <h2 class="content-card-title">Panel de Control (Dashboard)</h2>
                 <p class="content-text">Bienvenido al panel de administración de IntegraTEA.</p>
-                <p class="content-text">Navega a la sección de Gestionar Usuarios para empezar.</p>
+                <p class="content-text">Navega a las secciones de la izquierda para empezar.</p>
             </div>
         `;
-        setActiveLink('dashboard-link'); // Marcar Dashboard como activo
+        setActiveLink('dashboard-link');
     }
 
-    function renderActivitiesPage() {
-        mainContent.innerHTML = `
-            <div class="content-card">
-                <h2 class="content-card-title">Gestión de Actividades</h2>
-                <p class="content-text">Aquí se gestionarán las actividades.</p>
-                <p class="content-text">¡Este módulo está en construcción!</p>
-            </div>
-        `;
-        setActiveLink('activities-link'); // Marcar Actividades como activo
-    }
-
+    // ELIMINAMOS LA FUNCIÓN renderActivitiesPage() (placeholder)
 
     function handleRouting() {
         const hash = window.location.hash;
@@ -69,31 +58,43 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (hash === '#users' && window.usersManagement) { // CAMBIO: Hash y módulo
+        if (hash === '#users' && window.usersManagement) {
             window.usersManagement.renderUsersManagementPage();
-            setActiveLink('users-management-link'); // Marcar Gestionar Usuarios como activo
+            setActiveLink('users-management-link');
+        
+        // --- INICIO DE LA MODIFICACIÓN ---
+        } else if (hash === '#activities' && window.activitiesManagement) {
+            // Ya no llama al placeholder, sino al módulo real
+            window.activitiesManagement.renderActivitiesManagementPage();
+            setActiveLink('activities-link');
+        // --- FIN DE LA MODIFICACIÓN ---
+        
         } else if (hash === '#dashboard') {
             renderDashboard();
-        } else if (hash === '#activities') { // NUEVO: Ruta para actividades
-            renderActivitiesPage();
-        }
-        else {
+        
+        } else {
+            // Si el hash no coincide con ninguna ruta conocida, redirigir al dashboard
             window.location.hash = '#dashboard';
             renderDashboard();
         }
 
+        // Cierra el sidebar en pantallas móviles después de la navegación
         if (sidebar && sidebar.classList.contains('sidebar-open')) {
              sidebar.classList.remove('sidebar-open');
         }
     }
 
+    // Listener para el botón de toggle del sidebar
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('sidebar-open');
         });
     }
 
+    // Listener para cambios en el hash de la URL (navegación SPA)
     window.addEventListener('hashchange', handleRouting);
 
+    // Comprobar autenticación y renderizar la vista inicial al cargar la página
     checkAuthAndRender();
 });
+
