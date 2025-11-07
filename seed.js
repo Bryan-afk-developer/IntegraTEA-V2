@@ -4,14 +4,12 @@
 
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs'); // Necesario para hashear contraseñas si no usamos el hook 'pre'
+const bcrypt = require('bcryptjs'); 
 
 // Cargar variables de entorno
-// NOTA: Asegúrate de que tu .env esté en la raíz del proyecto
 dotenv.config();
 
 // Importar modelos de Mongoose
-// Asegúrate de que las rutas a tus modelos sean correctas
 const Educator = require('./server/models/Educator');
 const Child = require('./server/models/Child');
 const Pictogram = require('./server/models/Pictogram');
@@ -21,13 +19,13 @@ const Activity = require('./server/models/Activity');
 const TEST_PASSWORD_PLAINTEXT = 'password123';
 
 // --- FUNCIÓN CORREGIDA ---
-// Se reemplaza Unsplash por Picsum.photos, que es mucho más estable para
-// generar URLs de imágenes estáticas en un script de poblado masivo.
-// Usa una "seed" (semilla) para generar una imagen única pero consistente para cada pictograma.
-function getStaticImageUrl(seed, width = 150, height = 150) {
-  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`;
+// Usa el parámetro 'sig' para obtener una imagen única y evitar el caché/bloqueo de Unsplash
+function getUnsplashImageUrl(keyword, width = 150, height = 150) {
+  // Genera un valor aleatorio (seed) para la URL
+  const randomSeed = Math.floor(Math.random() * 100000);
+  // Utilizamos el parámetro "sig" (signature) en source.unsplash.com
+  return `https://source.unsplash.com/${width}x${height}/?${encodeURIComponent(keyword)}&sig=${randomSeed}`;
 }
-
 
 const runSeedScript = async () => {
   try {
@@ -55,9 +53,9 @@ const runSeedScript = async () => {
     // == EDUCADORES (1000) ==
     console.log("\n==> Generando y poblando 1000 Educadores...");
     const schools = ['CAM Sur Mérida', 'USAER 23', 'Instituto Kumen', 'Centro ASTRA', 'Escuela Modelo'];
-    const educatorIds = []; // Para almacenar los _id de los educadores creados
+    const educatorIds = []; 
 
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 300; i++) {
         const firstNames = ['Ana', 'Luisa', 'Carlos', 'Javier', 'Mariana', 'Sofía', 'Pedro', 'Gabriela', 'Diego', 'Valeria'];
         const lastNames = ['Pérez', 'García', 'Rodríguez', 'Martínez', 'López', 'González', 'Hernández', 'Sánchez'];
         const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
@@ -67,36 +65,36 @@ const runSeedScript = async () => {
             firstName: firstName,
             lastName: lastName,
             email: `educador${i}@${schools[i % schools.length].toLowerCase().replace(/\s/g, '')}.edu.mx`,
-            password: TEST_PASSWORD_PLAINTEXT, // La contraseña se hasheará automáticamente al llamar a .save()
+            password: TEST_PASSWORD_PLAINTEXT, 
             school: schools[i % schools.length],
             createdAt: new Date()
         });
         
         await newEducator.save();
-        educatorIds.push(newEducator._id); // Guardar el ID del educador creado
+        educatorIds.push(newEducator._id); 
     }
     console.log(`✅ Insertados ${educatorIds.length} educadores con contraseñas hasheadas.`);
 
     // == NIÑOS (1000) ==
     console.log("\n==> Generando y poblando 1000 Niños...");
-    const childrenData = []; // Guardar los objetos completos de niños para referenciar su educadorId
+    const childrenData = []; 
     const childrenIds = [];
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 300; i++) {
         const firstNames = ['Mateo', 'CARLOS', 'Valentina', 'Santiago', 'Camila', 'Leo', 'Isabella', 'Thiago', 'Regina', 'Sebastián', 'Emilia'];
         const lastNames = ['Chan', 'Pech','RIVAS', 'Canul', 'May', 'Ucan', 'Herrera', 'Ciau', 'Ek'];
-        const educatorIdForChild = educatorIds[i % educatorIds.length]; // Asignar un educador de la lista
+        const educatorIdForChild = educatorIds[i % educatorIds.length]; 
         
         const newChild = new Child({
             firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
             lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
-            age: Math.floor(Math.random() * (10 - 4 + 1)) + 4, // Edades entre 4 y 10
+            age: Math.floor(Math.random() * (10 - 4 + 1)) + 4, 
             educatorId: educatorIdForChild,
             createdAt: new Date()
         });
         await newChild.save();
         childrenIds.push(newChild._id);
-        childrenData.push(newChild); // Guardar el objeto del niño completo
+        childrenData.push(newChild); 
     }
     console.log(`✅ Insertados ${childrenIds.length} niños.`);
 
@@ -117,31 +115,30 @@ const runSeedScript = async () => {
         { name: 'Lápiz', category: 'Objetos' },
         { name: 'Teléfono', category: 'Objetos' },
         { name: 'Ordenador', category: 'Objetos' }
-    ]; // Esta lista tiene 50 pictogramas
+    ]; 
 
     const pictogramsDataToInsert = pictogramList.map(p => ({
         ...p,
-        // --- CAMBIO AQUÍ ---
-        imageUrl: getStaticImageUrl(p.name), // Usamos la nueva función estable
+        imageUrl: getUnsplashImageUrl(p.name), 
         createdAt: new Date()
     }));
 
-    // CAMBIO: Añadir 950 pictogramas genéricos para llegar a 1000
+    // Añadir 950 pictogramas genéricos para llegar a 1000
     console.log("... Generando 950 pictogramas genéricos adicionales con imágenes...");
+    const genericKeywords = ['objeto', 'persona', 'lugar', 'verbo', 'comida', 'animal', 'abstract', 'dibujo'];
     
-    for (let i = 1; i <= 950; i++) {
+    for (let i = 1; i <= 450; i++) {
         const name = `Pictograma ${i}`;
-        // --- CAMBIO AQUÍ ---
-        // Le damos una semilla única para asegurar que cada imagen sea diferente
+        const keyword = genericKeywords[i % genericKeywords.length]; 
         pictogramsDataToInsert.push({
             name: name,
             category: 'Genérico',
-            imageUrl: getStaticImageUrl(name), // Usamos la nueva función estable
+            imageUrl: getUnsplashImageUrl(keyword), 
             createdAt: new Date()
         });
     }
 
-    const pictogramDocs = await Pictogram.insertMany(pictogramsDataToInsert); // Usar insertMany para eficiencia
+    const pictogramDocs = await Pictogram.insertMany(pictogramsDataToInsert); 
     const pictogramIds = pictogramDocs.map(doc => doc._id);
     console.log(`✅ Insertados ${pictogramIds.length} pictogramas (50 específicos + 950 genéricos).`);
 
@@ -152,16 +149,14 @@ const runSeedScript = async () => {
     
     for (let i = 0; i < Math.min(1000, childrenIds.length); i++) {
         const childId = childrenIds[i];
-        // Asegurarse de que el educadorId provenga del objeto del niño si lo guardamos
         const educatorId = childrenData[i].educatorId; 
         
         const isCompleted = Math.random() > 0.5;
         
-        // Seleccionar 6 pictogramas al azar para el juego (asegurarse de tener suficientes, min 6)
         const numPictosForActivity = Math.min(6, pictogramIds.length);
         const randomPictos = [...pictogramIds].sort(() => 0.5 - Math.random()).slice(0, numPictosForActivity);
 
-      const activity = {
+        const activity = {
             childId: childId,
             educatorId: educatorId,
             pictogramIds: randomPictos,
@@ -169,12 +164,12 @@ const runSeedScript = async () => {
             createdAt: new Date()
         };
         if (isCompleted) {
-            activity.score = Math.floor(Math.random() * (100 - 60 + 1)) + 60; // Puntuación entre 60 y 100
+            activity.score = Math.floor(Math.random() * (100 - 60 + 1)) + 60; 
             activity.completedAt = new Date();
         }
         activitiesData.push(activity);
     }
-    await Activity.insertMany(activitiesData); // Usar insertMany para eficiencia
+    await Activity.insertMany(activitiesData); 
     console.log(`✅ Insertadas ${activitiesData.length} actividades.`);
 
 

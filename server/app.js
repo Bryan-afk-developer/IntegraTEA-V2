@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 5000;
 const authRoutes = require('./routes/auth');
 const educatorRoutes = require('./routes/educators');
 const childrenRoutes = require('./routes/children');
-const pictogramRoutes = require('./routes/pictograms'); // Ruta para pictogramas
-const activityRoutes = require('./routes/activities'); // Ruta para actividades
+const pictogramRoutes = require('./routes/pictograms');
+const activityRoutes = require('./routes/activities');
 
 // Conectar a la base de datos
 connectDB();
@@ -26,31 +26,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Servir archivos estáticos del frontend
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// --- LÍNEAS CORREGIDAS ---
+// 1. Definir la ruta a la carpeta 'dist' de Angular
+// La ruta correcta desde 'server/app.js' es subir un nivel ('..'), entrar a 'client-angular', luego a 'dist', etc.
+const angularAppPath = path.join(__dirname, '..', 'client-angular', 'dist', 'client-angular', 'browser');
 
-// Definir rutas de la API
+// 2. Servir los archivos estáticos desde la carpeta de Angular
+app.use(express.static(angularAppPath));
+// -------------------------
+
+
+// Definir rutas de la API (DEBEN ir ANTES de la ruta catch-all del frontend)
 app.use('/api/auth', authRoutes);
 app.use('/api/educators', educatorRoutes);
 app.use('/api/children', childrenRoutes);
-app.use('/api/pictograms', pictogramRoutes); // <-- REGISTRAR RUTA
-app.use('/api/activities', activityRoutes); // <-- REGISTRAR RUTA
+app.use('/api/pictograms', pictogramRoutes);
+app.use('/api/activities', activityRoutes);
 
-// Servir el index.html para rutas de SPA (Catch-all para frontend)
-// IMPORTANTE: Esto debe ir DESPUÉS de todas las rutas API
+
+// --- RUTA CATCH-ALL CORREGIDA ---
+// Servir el index.html de Angular para cualquier otra ruta que no sea de la API.
+// Esto permite que el enrutamiento de Angular funcione.
 app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-        res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
-    } else {
-        // Si es una ruta API que no coincidió con ninguna anterior, es 404
-        res.status(404).json({ message: 'API endpoint not found' });
-    }
+  res.sendFile(path.join(angularAppPath, 'index.html'));
 });
+// ---------------------------------
+
 
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Frontend served at http://localhost:${PORT}`);
-    console.log(`API endpoints available at http://localhost:${PORT}/api/...`);
 });
-
