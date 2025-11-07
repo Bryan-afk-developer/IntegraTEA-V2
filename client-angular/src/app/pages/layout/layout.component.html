@@ -1,0 +1,46 @@
+<div class="admin-panel-section">
+  <!-- Header (Barra Morada Superior) -->
+  <header class="admin-header">
+    <div class="header-left">
+      <!-- (Opcional) Botón para sidebar móvil -->
+      <!-- <button (click)="toggleSidebar()" class="sidebar-toggle"> ... </button> -->
+      <h1 class="header-title">IntegraTEA Admin</h1>
+    </div>
+    <div class="header-right">
+      <span class="welcome-message">Bienvenido, {{ userName }}</span>
+      <button (click)="handleLogout()" class="btn btn-danger">
+        Cerrar Sesión
+      </button>
+    </div>
+  </header>
+
+  <div class="admin-main-wrapper">
+    <!-- Sidebar (Menú Lateral) -->
+    <aside class="admin-sidebar">
+      <nav>
+        <!-- 
+          routerLink: La ruta a la que navega
+          routerLinkActive: La clase CSS que se aplica si la ruta está activa
+        -->
+        <a routerLink="/dashboard" routerLinkActive="active" class="sidebar-link">
+          Dashboard
+        </a>
+        <a routerLink="/users" routerLinkActive="active" class="sidebar-link">
+          Gestionar Usuarios
+        </a>
+        <a routerLink="/activities" routerLinkActive="active" class="sidebar-link">
+          Actividades
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Área de Contenido Principal -->
+    <main class="admin-content">
+      <!--
+        ¡LA MAGIA DE ANGULAR!
+        Aquí es donde Angular cargará DashboardComponent, UserManagementComponent, etc.
+      -->
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,186 @@
+<div @fadeIn>
+  <div class="content-card">
+    <h2 class="content-card-title">Gestión de Usuarios</h2>
+
+    <div class="filters-actions-container">
+      <input 
+        type="text" 
+        (input)="onFilter($event)"
+        placeholder="Buscar por nombre o rol..."
+        class="filter-input">
+      
+      <button (click)="openModal('addRole')" class="btn-add-user">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+        Agregar Usuario
+      </button>
+    </div>
+
+    <div class="data-table-container">
+      @if (isLoading) {
+        <p>Cargando usuarios...</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Rol</th>
+              <th>Email / Escuela</th>
+              <th>Edad / Educador Asignado</th>
+              <th>Fecha de Creación</th>
+              <th class="actions-cell">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of filteredUsers; track user._id) {
+              <tr>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>
+                  @if (user.role === 'Educador') {
+                    <span class="badge badge-educator">Educador</span>
+                  } @else {
+                    <span class="badge badge-child">Niño</span>
+                  }
+                </td>
+                
+                @if (user.role === 'Educador') {
+                  <td>
+                    <div>{{ user.email }}</div>
+                    <small>{{ user.school }}</small>
+                  </td>
+                } @else {
+                  <td>N/A</td>
+                }
+
+                @if (user.role === 'Niño') {
+                  <td>
+                    <div>{{ user.age }} años</div>
+                    <small>{{ user.educatorId || 'N/A' }}</small>
+                  </td>
+                } @else {
+                  <td>N/A</td>
+                }
+
+                <td>{{ user.createdAt | date:'dd/MM/yyyy' }}</td>
+                
+                <td class="actions-cell">
+                  <button (click)="openModal('edit', user)" class="edit-btn icon-btn" title="Editar">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.862 4.487zm0 0L19.5 7.125"></path></svg>
+                  </button>
+                  <button (click)="openModal('delete', user)" class="delete-btn icon-btn" title="Eliminar">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.927a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m-1.022.165L5.677 19.673a2.25 2.25 0 002.244 2.077h7.128a2.25 2.25 0 002.244-2.077L19.58 5.79m-4.026 0c.182.025.364.05.546.075M9.26 5.79c.182.025.364.05.546.075"></path></svg>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr class="empty-row">
+                <td colspan="6">No se encontraron usuarios.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</div>
+
+@if (isModalOpen) {
+  <div class="crud-modal-overlay" (click)="closeModal()">
+    
+    <div class="crud-modal-content" [class.modal-content-lg]="modalMode === 'addEducator' || modalMode === 'editEducator' || modalMode === 'addChild' || modalMode === 'editChild'" (click)="$event.stopPropagation()">
+      <button (click)="closeModal()" class="crud-modal-close-btn">&times;</button>
+      
+      <h3 class="crud-modal-title">
+        @switch (modalMode) {
+          @case ('addRole') { Seleccionar Tipo de Usuario }
+          @case ('addEducator') { Agregar Educador }
+          @case ('addChild') { Agregar Niño }
+          @case ('editEducator') { Editar Educador }
+          @case ('editChild') { Editar Niño }
+          @case ('delete') { Confirmar Eliminación }
+        }
+      </h3>
+
+      <div class="crud-modal-body">
+
+        @if (modalMode === 'addRole') {
+          <p>¿Qué tipo de usuario deseas agregar?</p>
+          <div class="role-selection-actions">
+            <button (click)="setModalMode('addEducator')" class="btn btn-primary">Agregar Educador</button>
+            <button (click)="setModalMode('addChild')" class="btn btn-primary" style="background-color: #0d9488;">Agregar Niño</button>
+          </div>
+        }
+
+        @if (modalMode === 'addEducator' || modalMode === 'editEducator' || modalMode === 'addChild' || modalMode === 'editChild') {
+          <form class="form-grid" [formGroup]="userForm" (ngSubmit)="onUserSubmit()">
+
+            @if (modalMode === 'addEducator' || modalMode === 'editEducator') {
+              <div class="form-group">
+                <label for="firstName">Nombre</label>
+                <input type="text" id="firstName" formControlName="firstName">
+              </div>
+              <div class="form-group">
+                <label for="lastName">Apellido</label>
+                <input type="text" id="lastName" formControlName="lastName">
+              </div>
+              <div class="form-group form-group-full">
+                <label for="email">Email</label>
+                <input type="email" id="email" formControlName="email">
+              </div>
+              <div class="form-group">
+                <label for="school">Escuela</label>
+                <input type="text" id="school" formControlName="school">
+              </div>
+              <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" formControlName="password" [placeholder]="modalMode === 'editEducator' ? '(Dejar vacío para no cambiar)' : ''">
+              </div>
+            }
+
+            @if (modalMode === 'addChild' || modalMode === 'editChild') {
+              <div class="form-group">
+                <label for="firstName">Nombre</label>
+                <input type="text" id="firstName" formControlName="firstName">
+              </div>
+              <div class="form-group">
+                <label for="lastName">Apellido</label>
+                <input type="text" id="lastName" formControlName="lastName">
+              </div>
+              <div class="form-group">
+                <label for="age">Edad</label>
+                <input type="number" id="age" formControlName="age">
+              </div>
+              <div class="form-group">
+                <label for="educatorId">Educador Asignado</label>
+                <select id="educatorId" formControlName="educatorId" class="filter-input" style="width: 100%; max-width: 100%;">
+                  <option [value]="null" disabled>-- Selecciona un Educador --</option>
+                  @for (edu of allEducators; track edu._id) {
+                    <option [value]="edu._id">{{ edu.firstName }} {{ edu.lastName }}</option>
+                  }
+                </select>
+              </div>
+            }
+
+            <div class="form-actions">
+              @if (formError) {
+                <p class="error-message">{{ formError }}</p>
+              }
+              <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Guardar</button>
+            </div>
+          </form>
+        }
+
+        @if (modalMode === 'delete' && userToDelete) {
+          <p>
+            ¿Estás seguro de que deseas eliminar a 
+            <strong>{{ userToDelete.firstName }} {{ userToDelete.lastName }}</strong> ({{ userToDelete.role }})?
+          </p>
+          @if (formError) {
+            <p class="error-message">{{ formError }}</p>
+          }
+          <div class="form-actions">
+            <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
+            <button type="button" (click)="onDeleteConfirm()" class="btn btn-danger">Eliminar</button>
+          </div>
+        }
+      </div> </div> </div> }

@@ -1,0 +1,154 @@
+<div @fadeIn>
+  <div class="content-card">
+    <h2 class="content-card-title">Gestión de Actividades</h2>
+
+    <div class="filters-actions-container">
+      <input 
+        type="text" 
+        (input)="onFilter($event)"
+        placeholder="Buscar por niño o estado..."
+        class="filter-input">
+      
+      <button (click)="openModal('add')" class="btn-add-activity">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+        Asignar Actividad
+      </button>
+    </div>
+
+    <div class="data-table-container">
+      @if (isLoading) {
+        <p>Cargando actividades...</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Niño Asignado</th>
+              <th>Educador</th>
+              <th>Estado</th>
+              <th>Puntuación</th>
+              <th>Fecha Creación</th>
+              <th class="actions-cell">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (act of filteredActivities; track act._id) {
+              <tr>
+                <td>{{ act.childId?.firstName }} {{ act.childId?.lastName }}</td>
+                <td>{{ act.educatorId?.firstName }} {{ act.educatorId?.lastName }}</td>
+                <td>
+                  @if (act.status === 'completada') {
+                    <span class="badge badge-completed">Completada</span>
+                  } @else {
+                    <span class="badge badge-assigned">Asignada</span>
+                  }
+                </td>
+                <td>{{ act.score ?? 'N/A' }}</td>
+                <td>{{ act.createdAt | date:'dd/MM/yyyy' }}</td>
+                
+                <td class="actions-cell">
+                  <button (click)="openModal('edit', act)" class="edit-btn icon-btn" title="Editar">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.862 4.487zm0 0L19.5 7.125"></path></svg>
+                  </button>
+                  <button (click)="openModal('delete', act)" class="delete-btn icon-btn" title="Eliminar">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.927a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m-1.022.165L5.677 19.673a2.25 2.25 0 002.244 2.077h7.128a2.25 2.25 0 002.244-2.077L19.58 5.79m-4.026 0c.182.025.364.05.546.075M9.26 5.79c.182.025.364.05.546.075"></path></svg>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr class="empty-row">
+                <td colspan="6">No se encontraron actividades.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</div>
+
+@if (isModalOpen) {
+  <div class="crud-modal-overlay" (click)="closeModal()">
+    <div class="crud-modal-content modal-content-lg" (click)="$event.stopPropagation()">
+      <button (click)="closeModal()" class="crud-modal-close-btn">&times;</button>
+      
+      <h3 class="crud-modal-title">
+        @switch (modalMode) {
+          @case ('add') { Asignar Actividad }
+          @case ('edit') { Editar Actividad }
+          @case ('delete') { Confirmar Eliminación }
+        }
+      </h3>
+
+      <div class="crud-modal-body">
+
+        @if (modalMode === 'add' || modalMode === 'edit') {
+          <form class="form-grid" [formGroup]="activityForm" (ngSubmit)="onActivitySubmit()">
+
+            <div class="form-group">
+              <label for="childId">Asignar a Niño</label>
+              <select id="childId" formControlName="childId" class="filter-input" style="width: 100%; max-width: 100%;">
+                <option [value]="null" disabled>-- Selecciona un Niño --</option>
+                @for (child of allChildren; track child._id) {
+                  <option [value]="child._id">{{ child.firstName }} {{ child.lastName }}</option>
+                }
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="status">Estado</label>
+              <select id="status" formControlName="status" class="filter-input" style="width: 100%; max-width: 100%;">
+                <option value="asignada">Asignada</option>
+                <option value="completada">Completada</option>
+              </select>
+            </div>
+
+            @if (activityForm.get('status')?.value === 'completada') {
+              <div class="form-group">
+                <label for="score">Puntuación (%)</label>
+                <input type="number" id="score" formControlName="score" min="0" max="100">
+              </div>
+            }
+
+            <div class="form-group form-group-full" formArrayName="pictogramIds">
+              <label>Pictogramas (Debes seleccionar 6)</label>
+              <div class="pictogram-selector-list">
+                @for (picto of allPictograms; track picto._id; let i = $index) {
+                  <label class="pictogram-item">
+                    <input type="checkbox" [formControlName]="i" (change)="onPictogramChange($event)">
+                    <img [src]="picto.imageUrl" [alt]="picto.name">
+                    <span>{{ picto.name }}</span>
+                  </label>
+                }
+              </div>
+              @if (activityForm.get('pictogramIds')?.errors?.['minlength']) {
+                <small class="error-message">Debes seleccionar al menos 6 pictogramas.</small>
+              }
+              @if (activityForm.get('pictogramIds')?.errors?.['maxlength']) {
+                <small class="error-message">Solo puedes seleccionar 6 pictogramas.</small>
+              }
+            </div>
+
+            <div class="form-actions">
+              @if (formError) {
+                <p class="error-message">{{ formError }}</p>
+              }
+              <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="activityForm.invalid">Guardar</button>
+            </div>
+          </form>
+        }
+
+        @if (modalMode === 'delete' && activityToDelete) {
+          <p>
+            ¿Estás seguro de que deseas eliminar la actividad asignada a 
+            <strong>{{ activityToDelete.childId.firstName }} {{ activityToDelete.childId.lastName }}</strong>?
+          </p>
+          @if (formError) {
+            <p class="error-message">{{ formError }}</p>
+          }
+          <div class="form-actions">
+            <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
+            <button type="button" (click)="onDeleteConfirm()" class="btn btn-danger">Eliminar</button>
+          </div>
+        }
+      </div> </div> </div> }

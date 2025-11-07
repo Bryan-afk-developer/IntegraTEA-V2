@@ -1,0 +1,28 @@
+/* Tus variables globales */
+$primary-purple: #6b21a8;
+$dark-purple: #581c87;
+$light-purple: #a78bfa;
+$blue-primary: #2563eb;
+$blue-hover: #1d4ed8;
+$green-primary: #16a34a;
+$green-hover: #15803d; // Esta es una de las que falla
+$red-primary: #ef4444;
+$red-hover: #dc2626;
+$gray-bg: #f3f4f6;
+$light-gray-bg: #f9fafb;
+$dark-gray: #1f2937;
+$text-gray: #374151;
+$border-gray: #d1d5db;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); // Esta es la otra
+
+/* Colores adicionales para roles */
+$badge-educator-bg: #dcfce7; 
+$badge-educator-text: #15803d;
+$badge-child-bg: #e0f2fe; 
+$badge-child-text: #2563eb;
+$badge-assigned-bg: #fef9c3;
+$badge-assigned-text: #a16207;
+$badge-completed-bg: #dcfce7;
+$badge-completed-text: #15803d;

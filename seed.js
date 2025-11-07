@@ -20,6 +20,15 @@ const Activity = require('./server/models/Activity');
 // Contraseña base para los educadores de prueba
 const TEST_PASSWORD_PLAINTEXT = 'password123';
 
+// --- FUNCIÓN CORREGIDA ---
+// Se reemplaza Unsplash por Picsum.photos, que es mucho más estable para
+// generar URLs de imágenes estáticas en un script de poblado masivo.
+// Usa una "seed" (semilla) para generar una imagen única pero consistente para cada pictograma.
+function getStaticImageUrl(seed, width = 150, height = 150) {
+  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`;
+}
+
+
 const runSeedScript = async () => {
   try {
     console.log("--- INICIANDO SCRIPT DE POBLACIÓN DE DATOS DE INTEGRATEA ---");
@@ -48,7 +57,6 @@ const runSeedScript = async () => {
     const schools = ['CAM Sur Mérida', 'USAER 23', 'Instituto Kumen', 'Centro ASTRA', 'Escuela Modelo'];
     const educatorIds = []; // Para almacenar los _id de los educadores creados
 
-    // CAMBIO: Bucle incrementado a 1000
     for (let i = 1; i <= 1000; i++) {
         const firstNames = ['Ana', 'Luisa', 'Carlos', 'Javier', 'Mariana', 'Sofía', 'Pedro', 'Gabriela', 'Diego', 'Valeria'];
         const lastNames = ['Pérez', 'García', 'Rodríguez', 'Martínez', 'López', 'González', 'Hernández', 'Sánchez'];
@@ -74,10 +82,8 @@ const runSeedScript = async () => {
     const childrenData = []; // Guardar los objetos completos de niños para referenciar su educadorId
     const childrenIds = [];
 
-    // CAMBIO: Bucle incrementado a 1000
     for (let i = 0; i < 1000; i++) {
         const firstNames = ['Mateo', 'CARLOS', 'Valentina', 'Santiago', 'Camila', 'Leo', 'Isabella', 'Thiago', 'Regina', 'Sebastián', 'Emilia'];
-
         const lastNames = ['Chan', 'Pech','RIVAS', 'Canul', 'May', 'Ucan', 'Herrera', 'Ciau', 'Ek'];
         const educatorIdForChild = educatorIds[i % educatorIds.length]; // Asignar un educador de la lista
         
@@ -115,20 +121,22 @@ const runSeedScript = async () => {
 
     const pictogramsDataToInsert = pictogramList.map(p => ({
         ...p,
-        imageUrl: p.imageUrl || `https://placehold.co/150x150/EEE/31343C?text=${encodeURIComponent(p.name)}`,
+        // --- CAMBIO AQUÍ ---
+        imageUrl: getStaticImageUrl(p.name), // Usamos la nueva función estable
         createdAt: new Date()
     }));
 
     // CAMBIO: Añadir 950 pictogramas genéricos para llegar a 1000
-    console.log("... Generando 950 pictogramas genéricos adicionales...");
-    const genericCategories = ['Genérico', 'Verbos', 'Adjetivos', 'Lugares (Genérico)', 'Comida (Genérico)'];
+    console.log("... Generando 950 pictogramas genéricos adicionales con imágenes...");
+    
     for (let i = 1; i <= 950; i++) {
         const name = `Pictograma ${i}`;
-        const category = genericCategories[i % genericCategories.length];
+        // --- CAMBIO AQUÍ ---
+        // Le damos una semilla única para asegurar que cada imagen sea diferente
         pictogramsDataToInsert.push({
             name: name,
-            category: category,
-            imageUrl: `https://placehold.co/150x150/EEE/31343C?text=${encodeURIComponent(name)}`,
+            category: 'Genérico',
+            imageUrl: getStaticImageUrl(name), // Usamos la nueva función estable
             createdAt: new Date()
         });
     }
@@ -142,7 +150,6 @@ const runSeedScript = async () => {
     console.log("\n==> Generando y poblando 1000 Actividades...");
     const activitiesData = [];
     
-    // CAMBIO: Bucle incrementado a 1000
     for (let i = 0; i < Math.min(1000, childrenIds.length); i++) {
         const childId = childrenIds[i];
         // Asegurarse de que el educadorId provenga del objeto del niño si lo guardamos
@@ -154,7 +161,7 @@ const runSeedScript = async () => {
         const numPictosForActivity = Math.min(6, pictogramIds.length);
         const randomPictos = [...pictogramIds].sort(() => 0.5 - Math.random()).slice(0, numPictosForActivity);
 
-        const activity = {
+      const activity = {
             childId: childId,
             educatorId: educatorId,
             pictogramIds: randomPictos,
@@ -186,4 +193,3 @@ const runSeedScript = async () => {
 };
 
 runSeedScript();
-

@@ -1,0 +1,109 @@
+/* src/styles.scss */
+
+/* Tus variables globales (¡ahora como variables SCSS!) */
+$primary-purple: #6b21a8;
+$dark-purple: #581c87;
+$light-purple: #a78bfa;
+$blue-primary: #2563eb;
+$blue-hover: #1d4ed8;
+$green-primary: #16a34a;
+$red-primary: #ef4444;
+$red-hover: #dc2626;
+$gray-bg: #f3f4f6;
+$light-gray-bg: #f9fafb;
+$dark-gray: #1f2937;
+$text-gray: #374151;
+$border-gray: #d1d5db;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+/* Reseteo global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $gray-bg;
+  color: $text-gray;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Clases de botones genéricos que usaremos mucho */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 700;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  text-decoration: none; // Para enlaces que parezcan botones
+  display: inline-block;
+}
+
+.btn-primary {
+  background-color: $blue-primary;
+  &:hover { background-color: $blue-hover; }
+}
+.btn-danger {
+  background-color: $red-primary;
+  &:hover { background-color: $red-hover; }
+}
+
+/* Clases para formularios */
+.form-group {
+  margin-bottom: 1rem;
+  label {
+    display: block;
+    color: $text-gray;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid $border-gray;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    color: $text-gray;
+    line-height: 1.25;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    &:focus {
+      outline: none;
+      border-color: $blue-primary;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+    }
+  }
+}
+
+.error-message {
+  color: $red-primary;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Tarjeta de contenido genérica */
+.content-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: $shadow-lg;
+}
+.content-card-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 1.5rem;
+}
+
+.hidden {
+  display: none !important;
+}

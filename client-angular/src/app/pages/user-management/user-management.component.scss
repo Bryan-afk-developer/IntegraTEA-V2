@@ -1,0 +1,234 @@
+@import '../../../styles.scss';
+/* Filtros y acciones */
+.filters-actions-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-input {
+  flex-grow: 1;
+  max-width: 300px;
+  padding: 0.75rem 1rem;
+  border: 1px solid $border-gray;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: $blue-primary;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  }
+}
+
+.btn-add-user {
+  background-color: #0d9488; // turquesa
+  color: white;
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: $shadow-md;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0f766e;
+  }
+
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 2.5;
+  }
+}
+
+/* Tabla de datos */
+.data-table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  min-width: 100%;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-collapse: collapse;
+
+  thead tr {
+    background-color: #f7fafc;
+    text-align: left;
+    color: #4a5568;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  th, td {
+    padding: 0.75rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  td {
+    color: #4a5568;
+    font-size: 0.875rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .empty-row td {
+    text-align: center;
+    padding: 1rem;
+    color: #6b7280;
+  }
+
+  .actions-cell {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem;
+    margin: 0 0.25rem;
+    vertical-align: middle;
+    transition: color 0.2s ease-in-out;
+
+    .icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke-width: 2;
+    }
+
+    &.edit-btn {
+      color: $blue-primary;
+      &:hover { color: $blue-hover; }
+    }
+
+    &.delete-btn {
+      color: $red-primary;
+      &:hover { color: $red-hover; }
+    }
+  }
+}
+
+/* Badges de Rol */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-educator {
+  background-color: #dcfce7; // green-100
+  color: #15803d; // green-700
+}
+
+.badge-child {
+  background-color: #e0f2fe; // blue-100
+  color: #2563eb; // blue-700
+}
+
+/* Estilos del Modal */
+.crud-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.crud-modal-content {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: gray 0px 10px 15px -3px, gray 0px 4px 6px -2px;
+  width: 90%;
+  max-width: 32rem; // Default (para selección de rol o borrado)
+  position: relative;
+}
+
+.modal-content-lg {
+  max-width: 48rem; // 768px
+}
+
+
+.crud-modal-close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: #6b7280;
+  font-size: 2rem;
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease-in-out;
+  &:hover {
+    color: #1a202c;
+  }
+}
+
+.crud-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a202c;
+}
+
+.crud-modal-body {
+  margin-bottom: 1rem;
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem 1.5rem; 
+    
+    @media (min-width: 640px) { 
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .form-group-full {
+    @media (min-width: 640px) {
+      grid-column: 1 / -1; 
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    
+    @media (min-width: 640px) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .role-selection-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+}

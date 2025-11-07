@@ -1,0 +1,43 @@
+@import '../../../styles.scss';
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, $primary-purple, $dark-purple);
+  padding: 1.5rem;
+}
+
+.login-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: $shadow-lg;
+  width: 100%;
+  max-width: 28rem;
+  text-align: center;
+
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 2rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
