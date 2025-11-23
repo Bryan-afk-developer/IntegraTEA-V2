@@ -1,0 +1,125 @@
+@import '../../../styles.scss';
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.welcome-banner {
+    margin-bottom: 2rem;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: $text-main;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: $text-muted;
+        font-size: 1.1rem;
+    }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: $shadow-md;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: $shadow-hover;
+    }
+
+    h3 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $text-muted;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .value {
+        font-size: 3rem;
+        font-weight: 800;
+        color: $text-main;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .trend {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    &.orange {
+        border-color: rgba($primary-orange, 0.2);
+
+        .value {
+            color: $primary-orange;
+        }
+
+        .trend {
+            color: $success;
+        }
+
+        &:hover {
+            background: linear-gradient(to bottom right, white, $badge-child-bg);
+        }
+    }
+
+    &.teal {
+        border-color: rgba($secondary-teal, 0.2);
+
+        .value {
+            color: $secondary-teal;
+        }
+
+        .trend {
+            color: $success;
+        }
+
+        &:hover {
+            background: linear-gradient(to bottom right, white, $badge-educator-bg);
+        }
+    }
+
+    &.yellow {
+        border-color: rgba($accent-yellow, 0.2);
+
+        .value {
+            color: darken($accent-yellow, 10%);
+        }
+
+        .trend {
+            color: $danger;
+        }
+
+        &:hover {
+            background: linear-gradient(to bottom right, white, $badge-assigned-bg);
+        }
+    }
+}
+
+.mt-8 {
+    margin-top: 2rem;
+}
+
+.actions-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}

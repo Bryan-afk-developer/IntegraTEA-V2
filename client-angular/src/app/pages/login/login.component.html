@@ -1,27 +1,28 @@
 <div class="login-section">
-  <div class="login-card" [@fadeIn]>
-    <h1>IntegraTEA Admin</h1>
-    <h2>Iniciar Sesión</h2>
-    
-    <!-- Usamos ngSubmit para el formulario -->
+  <div class="login-card fade-in">
+    <div class="login-header">
+      <div class="logo-icon">🍊</div> <!-- Placeholder para logo, usando emoji por ahora -->
+      <h1>IntegraTEA</h1>
+      <h2>Bienvenido de nuevo</h2>
+    </div>
+
     <form (ngSubmit)="handleLogin()">
       <div class="form-group">
-        <label for="login-email">Email:</label>
-        <!-- [(ngModel)] conecta el input con la variable en el .ts -->
-        <input type="email" id="login-email" name="email" required [(ngModel)]="email">
+        <label for="login-email">Correo Electrónico</label>
+        <input type="email" id="login-email" name="email" required [(ngModel)]="email" placeholder="ejemplo@correo.com">
       </div>
       <div class="form-group">
-        <label for="login-password">Contraseña:</label>
-        <input type="password" id="login-password" name="password" required [(ngModel)]="password">
+        <label for="login-password">Contraseña</label>
+        <input type="password" id="login-password" name="password" required [(ngModel)]="password"
+          placeholder="••••••••">
       </div>
-      
-      <!-- Mensaje de error dinámico -->
+
       @if (errorMessage) {
-        <p class="error-message">{{ errorMessage }}</p>
+      <p class="error-message">{{ errorMessage }}</p>
       }
-      
+
       <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+        {{ isLoading ? 'Entrando...' : 'Iniciar Sesión' }}
       </button>
     </form>
   </div>

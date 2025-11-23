@@ -1,28 +1,41 @@
-/* Tus variables globales */
-$primary-purple: #6b21a8;
-$dark-purple: #581c87;
-$light-purple: #a78bfa;
-$blue-primary: #2563eb;
-$blue-hover: #1d4ed8;
-$green-primary: #16a34a;
-$green-hover: #15803d; // Esta es una de las que falla
-$red-primary: #ef4444;
-$red-hover: #dc2626;
-$gray-bg: #f3f4f6;
-$light-gray-bg: #f9fafb;
-$dark-gray: #1f2937;
-$text-gray: #374151;
-$border-gray: #d1d5db;
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); // Esta es la otra
+/* Variables Globales - Warm & Interactive Theme */
 
-/* Colores adicionales para roles */
-$badge-educator-bg: #dcfce7; 
-$badge-educator-text: #15803d;
-$badge-child-bg: #e0f2fe; 
-$badge-child-text: #2563eb;
-$badge-assigned-bg: #fef9c3;
-$badge-assigned-text: #a16207;
+/* Paleta Cálida y Energética */
+$primary-orange: #f97316; // Orange 500
+$primary-hover: #ea580c; // Orange 600
+$secondary-teal: #14b8a6; // Teal 500
+$teal-hover: #0d9488; // Teal 600
+$accent-yellow: #facc15; // Yellow 400
+
+/* Fondos y Textos */
+$bg-warm-cream: #fffbeb; // Amber 50 - Fondo principal cálido
+$bg-white: #ffffff;
+$text-main: #451a03; // Amber 950 - Texto principal (marrón muy oscuro)
+$text-muted: #78350f; // Amber 900 - Texto secundario
+$border-warm: #fed7aa; // Orange 200
+
+/* Estados */
+$success: #22c55e;
+$danger: #ef4444;
+$warning: #f59e0b;
+
+/* Sombras "Jugosas" */
+$shadow-sm: 0 1px 2px 0 rgba(251, 146, 60, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(251, 146, 60, 0.1), 0 2px 4px -1px rgba(251, 146, 60, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(251, 146, 60, 0.1), 0 4px 6px -2px rgba(251, 146, 60, 0.05);
+$shadow-hover: 0 20px 25px -5px rgba(251, 146, 60, 0.15), 0 10px 10px -5px rgba(251, 146, 60, 0.1);
+
+/* Animaciones */
+$transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Efecto rebote */
+
+/* Colores para roles (adaptados a cálidos) */
+$badge-educator-bg: #ccfbf1; // Teal 100
+$badge-educator-text: #0f766e; // Teal 700
+$badge-child-bg: #ffedd5; // Orange 100
+$badge-child-text: #c2410c; // Orange 700
+$badge-assigned-bg: #fef9c3; // Yellow 100
+$badge-assigned-text: #a16207; // Yellow 700
 $badge-completed-bg: #dcfce7;
 $badge-completed-text: #15803d;

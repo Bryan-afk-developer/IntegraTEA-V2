@@ -1,23 +1,7 @@
 /* src/styles.scss */
+@import 'variables';
 
-/* Tus variables globales (¡ahora como variables SCSS!) */
-$primary-purple: #6b21a8;
-$dark-purple: #581c87;
-$light-purple: #a78bfa;
-$blue-primary: #2563eb;
-$blue-hover: #1d4ed8;
-$green-primary: #16a34a;
-$red-primary: #ef4444;
-$red-hover: #dc2626;
-$gray-bg: #f3f4f6;
-$light-gray-bg: #f9fafb;
-$dark-gray: #1f2937;
-$text-gray: #374151;
-$border-gray: #d1d5db;
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-/* Reseteo global */
+/* Reseteo y Base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -25,83 +9,173 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: $gray-bg;
-  color: $text-gray;
-  line-height: 1.5;
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  /* Idealmente cargar una fuente más redonda */
+  background-color: $bg-warm-cream;
+  color: $text-main;
+  line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Clases de botones genéricos que usaremos mucho */
+/* Animaciones Globales */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Botones Interactivos */
 .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  /* Bordes más redondeados */
+  font-weight: 600;
+  font-size: 1rem;
   color: white;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  text-decoration: none; // Para enlaces que parezcan botones
-  display: inline-block;
+  transition: all $transition-bounce;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: $shadow-md;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: $shadow-hover;
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
 }
 
 .btn-primary {
-  background-color: $blue-primary;
-  &:hover { background-color: $blue-hover; }
-}
-.btn-danger {
-  background-color: $red-primary;
-  &:hover { background-color: $red-hover; }
+  background: linear-gradient(135deg, $primary-orange, $primary-hover);
+
+  &:hover {
+    background: linear-gradient(135deg, lighten($primary-orange, 5%), $primary-hover);
+  }
 }
 
-/* Clases para formularios */
+.btn-secondary {
+  background: linear-gradient(135deg, $secondary-teal, $teal-hover);
+}
+
+.btn-danger {
+  background: $danger;
+
+  &:hover {
+    background: darken($danger, 5%);
+  }
+}
+
+/* Formularios "Jugosos" */
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+
   label {
     display: block;
-    color: $text-gray;
-    font-size: 0.875rem;
-    font-weight: 700;
+    color: $text-muted;
+    font-size: 0.9rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
+    transition: color 0.2s;
   }
+
   input[type="text"],
   input[type="email"],
   input[type="password"] {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid $border-gray;
-    border-radius: 0.375rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    color: $text-gray;
-    line-height: 1.25;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    padding: 0.875rem 1rem;
+    border: 2px solid transparent;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: $shadow-sm;
+    color: $text-main;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: $shadow-md;
+    }
+
     &:focus {
       outline: none;
-      border-color: $blue-primary;
-      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+      border-color: $primary-orange;
+      box-shadow: 0 0 0 4px rgba($primary-orange, 0.15);
+      transform: scale(1.01);
     }
+
+    &::placeholder {
+      color: lighten($text-muted, 20%);
+    }
+  }
+
+  &:focus-within label {
+    color: $primary-orange;
   }
 }
 
 .error-message {
-  color: $red-primary;
+  color: $danger;
   font-size: 0.875rem;
   margin-top: 0.5rem;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Tarjeta de contenido genérica */
+/* Tarjetas */
 .content-card {
   background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
   box-shadow: $shadow-lg;
+  border: 1px solid rgba($primary-orange, 0.1);
+  transition: transform $transition-bounce, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-hover;
+  }
 }
+
 .content-card-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #1a202c;
+  font-size: 2rem;
+  font-weight: 800;
+  color: $text-main;
   margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
 }
 
 .hidden {

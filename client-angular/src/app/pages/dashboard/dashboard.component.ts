@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { fadeInAnimation } from '../../animations'; // Importamos la animación
+import { Router } from '@angular/router';
+import { fadeInAnimation } from '../../animations';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,8 +8,21 @@ import { fadeInAnimation } from '../../animations'; // Importamos la animación
   imports: [],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  animations: [ fadeInAnimation ] // Usamos la animación
+  animations: [fadeInAnimation]
 })
 export class DashboardComponent {
 
+  constructor(private router: Router) { }
+
+  navigateToActivities() {
+    this.router.navigate(['/activities']);
+  }
+
+  navigateToUsers() {
+    this.router.navigate(['/users']);
+  }
+
+  showNotImplemented() {
+    alert('🚧 Esta funcionalidad estará disponible en la versión 3.0 🚧');
+  }
 }

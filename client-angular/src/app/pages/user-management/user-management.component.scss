@@ -1,7 +1,8 @@
-@import '../../../styles.scss';
+@use '../../../styles.scss' as *; // Importar variables globales
+
 /* Filtros y acciones */
 .filters-actions-container {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -11,40 +12,51 @@
 
 .filter-input {
   flex-grow: 1;
-  max-width: 300px;
-  padding: 0.75rem 1rem;
-  border: 1px solid $border-gray;
-  border-radius: 0.375rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  max-width: 350px;
+  padding: 0.875rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: 1rem;
   font-size: 1rem;
+  background-color: $bg-warm-cream;
+  color: $text-main;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 
   &:focus {
     outline: none;
-    border-color: $blue-primary;
-    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+    background-color: white;
+    border-color: $primary-orange;
+    box-shadow: $shadow-md;
+  }
+
+  &::placeholder {
+    color: lighten($text-muted, 20%);
   }
 }
 
 .btn-add-user {
-  background-color: #0d9488; // turquesa
+  background: linear-gradient(135deg, $secondary-teal, $teal-hover);
   color: white;
   font-size: 1rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   box-shadow: $shadow-md;
   border: none;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background-color: #0f766e;
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
   }
 
   .icon {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
     stroke-width: 2.5;
   }
 }
@@ -52,183 +64,252 @@
 /* Tabla de datos */
 .data-table-container {
   overflow-x: auto;
+  border-radius: 1.5rem;
+  box-shadow: $shadow-sm;
+  background: white;
+  border: 1px solid rgba($primary-orange, 0.1);
 }
 
 .data-table {
   min-width: 100%;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 
   thead tr {
-    background-color: #f7fafc;
-    text-align: left;
-    color: #4a5568;
-    text-transform: uppercase;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    background-color: rgba($primary-orange, 0.05);
   }
 
-  th, td {
-    padding: 0.75rem 1.25rem;
+  th {
+    padding: 1.25rem 1.5rem;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    color: $text-muted;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid rgba($primary-orange, 0.1);
   }
 
   td {
-    color: #4a5568;
-    font-size: 0.875rem;
-    font-weight: 400;
-    white-space: nowrap;
+    padding: 1.25rem 1.5rem;
+    color: $text-main;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba($border-warm, 0.5);
+    vertical-align: middle;
+
+    small {
+      display: block;
+      color: lighten($text-muted, 10%);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
   }
 
-  tbody tr:hover {
-    background-color: #f8f9fa;
+  tbody tr {
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $bg-warm-cream;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
   }
-  
+
   .empty-row td {
     text-align: center;
-    padding: 1rem;
-    color: #6b7280;
+    padding: 3rem;
+    color: $text-muted;
+    font-style: italic;
   }
 
   .actions-cell {
-    text-align: center;
+    text-align: right;
     white-space: nowrap;
   }
 
   .icon-btn {
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0.3rem;
-    margin: 0 0.25rem;
-    vertical-align: middle;
-    transition: color 0.2s ease-in-out;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     .icon {
-      width: 1.2rem;
-      height: 1.2rem;
+      width: 1.25rem;
+      height: 1.25rem;
       stroke-width: 2;
     }
 
     &.edit-btn {
-      color: $blue-primary;
-      &:hover { color: $blue-hover; }
+      color: $secondary-teal;
+      background-color: rgba($secondary-teal, 0.1);
+
+      &:hover {
+        background-color: $secondary-teal;
+        color: white;
+        transform: translateY(-2px);
+      }
     }
 
     &.delete-btn {
-      color: $red-primary;
-      &:hover { color: $red-hover; }
+      color: $danger;
+      background-color: rgba($danger, 0.1);
+
+      &:hover {
+        background-color: $danger;
+        color: white;
+        transform: translateY(-2px);
+      }
     }
   }
 }
 
-/* Badges de Rol */
+/* Badges de Estado */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: capitalize;
+  letter-spacing: 0.02em;
 }
 
 .badge-educator {
-  background-color: #dcfce7; // green-100
-  color: #15803d; // green-700
+  background-color: $badge-educator-bg;
+  color: $badge-educator-text;
+  border: 1px solid rgba($badge-educator-text, 0.1);
 }
 
 .badge-child {
-  background-color: #e0f2fe; // blue-100
-  color: #2563eb; // blue-700
+  background-color: $badge-child-bg;
+  color: $badge-child-text;
+  border: 1px solid rgba($badge-child-text, 0.1);
 }
 
-/* Estilos del Modal */
+/* =================================
+  ESTILOS DEL MODAL (EL "WIDGET")
+  =================================
+*/
 .crud-modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(69, 26, 3, 0.4); // Warm dark overlay
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .crud-modal-content {
   background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: gray 0px 10px 15px -3px, gray 0px 4px 6px -2px;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: $shadow-hover;
   width: 90%;
-  max-width: 32rem; // Default (para selección de rol o borrado)
+  max-width: 32rem;
   position: relative;
+  border: 1px solid $border-warm;
+  animation: float 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-content-lg {
-  max-width: 48rem; // 768px
+  max-width: 48rem;
 }
-
 
 .crud-modal-close-btn {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  color: #6b7280;
-  font-size: 2rem;
-  font-weight: 700;
-  background: none;
+  top: 1.25rem;
+  right: 1.25rem;
+  color: $text-muted;
+  font-size: 1.5rem;
+  background: rgba($bg-warm-cream, 0.5);
   border: none;
   cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s ease-in-out;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
   &:hover {
-    color: #1a202c;
+    background-color: $danger;
+    color: white;
+    transform: rotate(90deg);
   }
 }
 
 .crud-modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #1a202c;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: $text-main;
+  text-align: center;
 }
 
 .crud-modal-body {
-  margin-bottom: 1rem;
-  
+
+  p {
+    color: $text-main;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .role-selection-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1.1rem;
+    }
+  }
+
   .form-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.5rem 1.5rem; 
-    
-    @media (min-width: 640px) { 
+    gap: 1.25rem 1.5rem;
+
+    @media (min-width: 640px) {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  
+
   .form-group-full {
     @media (min-width: 640px) {
-      grid-column: 1 / -1; 
+      grid-column: 1 / -1;
     }
   }
 
   .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-    
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid $border-warm;
+
     @media (min-width: 640px) {
       grid-column: 1 / -1;
     }
-  }
 
-  .role-selection-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    button {
+      min-width: 120px;
+    }
   }
 }

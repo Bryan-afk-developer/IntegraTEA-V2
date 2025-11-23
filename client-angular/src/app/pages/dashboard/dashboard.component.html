@@ -1,8 +1,33 @@
-<!-- Usamos la animación @fadeIn -->
-<div @fadeIn>
-  <div class="content-card">
-    <h2 class="content-card-title">Panel de Control (Dashboard)</h2>
-    <p>Bienvenido al panel de administración de IntegraTEA.</p>
-    <p>Navega a las secciones de la izquierda para empezar.</p>
+<div class="dashboard-container fade-in">
+  <div class="welcome-banner">
+    <h1>¡Hola de nuevo! 👋</h1>
+    <p>Aquí tienes un resumen de la actividad reciente.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card orange">
+      <h3>Usuarios Activos</h3>
+      <div class="value">124</div>
+      <div class="trend">↑ 12% esta semana</div>
+    </div>
+    <div class="stat-card teal">
+      <h3>Actividades Completadas</h3>
+      <div class="value">856</div>
+      <div class="trend">↑ 5% esta semana</div>
+    </div>
+    <div class="stat-card yellow">
+      <h3>Nuevos Registros</h3>
+      <div class="value">45</div>
+      <div class="trend">↓ 2% esta semana</div>
+    </div>
+  </div>
+
+  <div class="content-card mt-8">
+    <h2 class="content-card-title">Acciones Rápidas</h2>
+    <div class="actions-grid">
+      <button class="btn btn-primary" (click)="navigateToActivities()">Crear Nueva Actividad</button>
+      <button class="btn btn-secondary" (click)="navigateToUsers()">Gestionar Usuarios</button>
+      <button class="btn btn-danger" (click)="showNotImplemented()">Ver Reportes</button>
+    </div>
   </div>
 </div>
