@@ -54,7 +54,7 @@ export class ActivityManagementComponent implements OnInit {
       status: ['asignada', Validators.required],
       score: [null],
       // Usamos un FormArray para los checkboxes de pictogramas
-      pictogramIds: this.fb.array([], [Validators.required, Validators.minLength(6), Validators.maxLength(6)])
+      pictogramIds: this.fb.array([])
     });
   }
 

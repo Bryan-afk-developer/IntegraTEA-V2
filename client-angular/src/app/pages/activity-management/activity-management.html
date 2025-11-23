@@ -32,11 +32,13 @@
             <th class="actions-cell">Acciones</th>
           </tr>
         </thead>
+
         <tbody>
           @for (act of filteredActivities; track act._id) {
           <tr>
             <td>{{ act.childId?.firstName }} {{ act.childId?.lastName }}</td>
             <td>{{ act.educatorId?.firstName }} {{ act.educatorId?.lastName }}</td>
+
             <td>
               @if (act.status === 'completada') {
               <span class="badge badge-completed">Completada</span>
@@ -44,6 +46,7 @@
               <span class="badge badge-assigned">Asignada</span>
               }
             </td>
+
             <td>{{ act.score ?? 'N/A' }}</td>
             <td>{{ act.createdAt | date:'dd/MM/yyyy' }}</td>
 
@@ -78,7 +81,10 @@
 </div>
 
 
-<!-- Modal Asignar/Editar/Eliminar -->
+<!-- ------------------------- -->
+<!-- MODAL CRUD (add/edit/delete) -->
+<!-- ------------------------- -->
+
 @if (isModalOpen) {
 <div class="crud-modal-overlay" (click)="closeModal()">
   <div class="crud-modal-content modal-content-lg" (click)="$event.stopPropagation()">
@@ -94,6 +100,7 @@
 
     <div class="crud-modal-body">
 
+      <!-- ADD / EDIT -->
       @if (modalMode === 'add' || modalMode === 'edit') {
       <form class="form-grid" [formGroup]="activityForm" (ngSubmit)="onActivitySubmit()">
 
@@ -143,47 +150,51 @@
           }
         </div>
 
+        @if (formError) {
+        <p class="error-message">{{ formError }}</p>
+        }
+
         <div class="form-actions">
-          @if (formError) {
-          <p class="error-message">{{ formError }}</p>
-          }
           <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="activityForm.invalid">Guardar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
 
       </form>
       }
 
-      @if (modalMode === 'delete' && activityToDelete) {
+      <!-- DELETE -->
+      @if (modalMode === 'delete') {
       <p>
         ¿Estás seguro de que deseas eliminar la actividad asignada a
-        <strong>{{ activityToDelete.childId.firstName }} {{ activityToDelete.childId.lastName }}</strong>?
+        <strong>{{ activityToDelete?.childId?.firstName }} {{ activityToDelete?.childId?.lastName }}</strong>?
       </p>
-
-      @if (formError) {
-      <p class="error-message">{{ formError }}</p>
-      }
 
       <div class="form-actions">
         <button type="button" (click)="closeModal()" class="btn btn-secondary">Cancelar</button>
         <button type="button" (click)="onDeleteConfirm()" class="btn btn-danger">Eliminar</button>
       </div>
       }
+
     </div>
   </div>
 </div>
 }
 
 
-<!-- Modal Subir Pictograma -->
+<!-- ------------------------- -->
+<!-- MODAL SUBIR PICTOGRAMA -->
+<!-- ------------------------- -->
+
 @if (isPictogramModalOpen) {
 <div class="crud-modal-overlay" (click)="closePictogramModal()">
   <div class="crud-modal-content" (click)="$event.stopPropagation()">
+
     <button (click)="closePictogramModal()" class="crud-modal-close-btn">&times;</button>
 
     <h3 class="crud-modal-title">📤 Subir Nuevo Pictograma</h3>
 
     <div class="crud-modal-body">
+
       <form (ngSubmit)="onPictogramUpload()">
 
         <div class="form-group">
@@ -220,7 +231,9 @@
         </div>
 
       </form>
+
     </div>
+
   </div>
 </div>
 }
