@@ -28,13 +28,14 @@ app.use(cors());
 
 // --- LÍNEAS CORREGIDAS ---
 // 1. Definir la ruta a la carpeta 'dist' de Angular
-// La ruta correcta desde 'server/app.js' es subir un nivel ('..'), entrar a 'client-angular', luego a 'dist', etc.
 const angularAppPath = path.join(__dirname, '..', 'client-angular', 'dist', 'client-angular', 'browser');
 
 // 2. Servir los archivos estáticos desde la carpeta de Angular
 app.use(express.static(angularAppPath));
-// -------------------------
 
+// 3. Servir archivos subidos (uploads) - permite acceder a las imágenes de pictogramas
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// -------------------------
 
 // Definir rutas de la API (DEBEN ir ANTES de la ruta catch-all del frontend)
 app.use('/api/auth', authRoutes);
@@ -43,17 +44,14 @@ app.use('/api/children', childrenRoutes);
 app.use('/api/pictograms', pictogramRoutes);
 app.use('/api/activities', activityRoutes);
 
-
 // --- RUTA CATCH-ALL CORREGIDA ---
 // Servir el index.html de Angular para cualquier otra ruta que no sea de la API.
-// Esto permite que el enrutamiento de Angular funcione.
 app.get('*', (req, res) => {
   res.sendFile(path.join(angularAppPath, 'index.html'));
 });
 // ---------------------------------
 
-
 // Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

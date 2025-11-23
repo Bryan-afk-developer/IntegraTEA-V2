@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { fadeInAnimation } from '../../animations';
 import { Activity, ActivityService } from '../../core/api/activity.service';
@@ -12,7 +12,8 @@ import { User, UserService, Child } from '../../core/api/user.service'; // Reusa
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './activity-management.html',
   styleUrl: './activity-management.scss',
@@ -34,6 +35,12 @@ export class ActivityManagementComponent implements OnInit {
   activityForm: FormGroup;
   activityToDelete: Activity | null = null;
   formError = '';
+
+  // Estado para modal de subir pictograma
+  isPictogramModalOpen = false;
+  newPictogram = { name: '', category: 'acciones' };
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -221,6 +228,58 @@ export class ActivityManagementComponent implements OnInit {
       error: (err) => {
         this.formError = err.error?.message || 'Error al eliminar la actividad.';
         console.error('Error deleting activity:', err);
+      }
+    });
+  }
+
+  // --- Métodos para subir pictogramas ---
+
+  openPictogramUploadModal(): void {
+    this.isPictogramModalOpen = true;
+    this.newPictogram = { name: '', category: 'acciones' };
+    this.selectedFile = null;
+    this.imagePreview = null;
+  }
+
+  closePictogramModal(): void {
+    this.isPictogramModalOpen = false;
+    this.newPictogram = { name: '', category: 'acciones' };
+    this.selectedFile = null;
+    this.imagePreview = null;
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      // Vista previa de la imagen
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  onPictogramUpload(): void {
+    if (!this.selectedFile || !this.newPictogram.name || !this.newPictogram.category) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    this.pictogramService.createPictogram(
+      this.newPictogram.name,
+      this.newPictogram.category,
+      this.selectedFile
+    ).subscribe({
+      next: (createdPictogram) => {
+        alert('✅ Pictograma subido exitosamente!');
+        this.loadInitialData(); // Recargar pictogramas disponibles
+        this.closePictogramModal();
+      },
+      error: (err) => {
+        alert('❌ Error al subir pictograma');
+        console.error('Error uploading pictogram:', err);
       }
     });
   }
