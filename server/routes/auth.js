@@ -41,6 +41,7 @@ router.post('/login', async (req, res) => {
                 lastName: educator.lastName,
                 email: educator.email,
                 school: educator.school,
+                isPremium: educator.isPremium || false,
             },
         });
 

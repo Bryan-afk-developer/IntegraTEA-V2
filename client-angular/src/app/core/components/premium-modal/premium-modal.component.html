@@ -1,0 +1,43 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="close()">&times;</button>
+
+        <div class="modal-header">
+            <div class="premium-badge">✨ PREMIUM ✨</div>
+            <h2>Actualiza a Premium</h2>
+            <p class="modal-subtitle">Disfruta de IntegraTEA sin interrupciones</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="price-section">
+                <div class="price">
+                    <span class="currency">$</span>
+                    <span class="amount">4.99</span>
+                    <span class="period">USD</span>
+                </div>
+                <p class="price-subtext">Pago único - Acceso de por vida</p>
+            </div>
+
+            <div class="features-list">
+                <div class="feature" *ngFor="let feature of features">
+                    <span class="feature-icon">{{ feature.icon }}</span>
+                    <span class="feature-text">{{ feature.text }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
+            <button class="upgrade-button" (click)="handleUpgrade()" [disabled]="isLoading">
+                <span *ngIf="!isLoading">🚀 Actualizar Ahora</span>
+                <span *ngIf="isLoading">Procesando...</span>
+            </button>
+
+            <p class="secure-payment">
+                <span class="lock-icon">🔒</span>
+                Pago seguro procesado por Stripe
+            </p>
+        </div>
+    </div>
+</div>

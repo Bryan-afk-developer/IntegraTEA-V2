@@ -8,6 +8,9 @@ const EducatorSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false }, // No retornar password por defecto
     school: { type: String, required: true },
+    isPremium: { type: Boolean, default: false },
+    stripeCustomerId: { type: String },
+    premiumExpiresAt: { type: Date },
     createdAt: { type: Date, default: Date.now }
 });
 

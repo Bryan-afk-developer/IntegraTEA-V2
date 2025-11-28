@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   // La API de tu backend (Asegúrate que tu backend esté corriendo en localhost:5001 o en Render)
   // Usamos /api para que funcione con el proxy (ver paso 4)
-  private apiUrl = '/api/auth'; 
+  private apiUrl = '/api/auth';
 
   constructor(
     private http: HttpClient,
@@ -23,6 +23,7 @@ export class AuthService {
         // Si el login es exitoso, guardamos los datos como antes
         localStorage.setItem('jwtToken', response.token);
         localStorage.setItem('userName', response.educator.firstName);
+        localStorage.setItem('isPremium', response.educator.isPremium?.toString() || 'false');
       })
     );
   }
@@ -31,8 +32,9 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('userName');
+    localStorage.removeItem('isPremium');
     // Redirigimos al login
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
 
   // Helper para el AuthGuard
@@ -43,5 +45,15 @@ export class AuthService {
   // Helper para el Layout
   getUserName(): string | null {
     return localStorage.getItem('userName');
+  }
+
+  // Helper para verificar si el usuario es premium
+  isPremium(): boolean {
+    return localStorage.getItem('isPremium') === 'true';
+  }
+
+  // Actualizar estado premium (después de pago exitoso)
+  updatePremiumStatus(isPremium: boolean): void {
+    localStorage.setItem('isPremium', isPremium.toString());
   }
 }

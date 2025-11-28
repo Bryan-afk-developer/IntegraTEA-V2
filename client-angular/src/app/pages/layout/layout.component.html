@@ -7,6 +7,12 @@
       <h1 class="header-title">IntegraTEA Admin</h1>
     </div>
     <div class="header-right">
+      <button *ngIf="isPremium" (click)="openManagePremiumModal()" class="premium-badge premium-badge-clickable">
+        ✨ Premium
+      </button>
+      <button *ngIf="!isPremium" (click)="openPremiumModal()" class="btn btn-premium">
+        🚫 Quitar Anuncios
+      </button>
       <span class="welcome-message">Bienvenido, {{ userName }}</span>
       <button (click)="handleLogout()" class="btn btn-danger">
         Cerrar Sesión
@@ -44,3 +50,6 @@
     </main>
   </div>
 </div>
+
+<!-- Modal Premium -->
+<app-premium-modal></app-premium-modal>

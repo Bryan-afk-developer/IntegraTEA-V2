@@ -1,0 +1,8 @@
+<div *ngIf="shouldShow" class="ad-banner" [ngClass]="'ad-banner--' + size">
+  <div class="ad-banner__content">
+    <div class="ad-banner__label">Anuncio</div>
+    <h3 class="ad-banner__title">{{ adContent.title }}</h3>
+    <p class="ad-banner__description">{{ adContent.description }}</p>
+    <button class="ad-banner__cta">{{ adContent.ctaText }}</button>
+  </div>
+</div>

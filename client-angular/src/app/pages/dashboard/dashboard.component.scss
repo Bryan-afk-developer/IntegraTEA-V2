@@ -117,6 +117,16 @@
     margin-top: 2rem;
 }
 
+.content-with-sidebar {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+
+    .content-card {
+        flex: 1;
+    }
+}
+
 .actions-grid {
     display: flex;
     gap: 1rem;

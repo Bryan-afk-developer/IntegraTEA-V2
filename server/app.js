@@ -17,14 +17,21 @@ const educatorRoutes = require('./routes/educators');
 const childrenRoutes = require('./routes/children');
 const pictogramRoutes = require('./routes/pictograms');
 const activityRoutes = require('./routes/activities');
+const paymentRoutes = require('./routes/payment');
 
 // Conectar a la base de datos
 connectDB();
 
-// Middlewares
+// Middlewares básicos
+app.use(cors());
+
+// IMPORTANTE: La ruta del webhook de Stripe DEBE procesarse ANTES de express.json()
+// porque Stripe necesita el raw body para verificar la firma
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
+
+// Ahora sí, el resto de las rutas pueden usar JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 // --- LÍNEAS CORREGIDAS ---
 // 1. Definir la ruta a la carpeta 'dist' de Angular
@@ -43,6 +50,7 @@ app.use('/api/educators', educatorRoutes);
 app.use('/api/children', childrenRoutes);
 app.use('/api/pictograms', pictogramRoutes);
 app.use('/api/activities', activityRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // --- RUTA CATCH-ALL CORREGIDA ---
 // Servir el index.html de Angular para cualquier otra ruta que no sea de la API.

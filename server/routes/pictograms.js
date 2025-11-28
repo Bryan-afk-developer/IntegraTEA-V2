@@ -3,8 +3,16 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Pictogram = require('../models/Pictogram');
 const { protect } = require('../middleware/auth');
+
+// Crear directorio si no existe
+const uploadsDir = path.join(__dirname, '..', 'uploads', 'pictograms');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+    console.log('Directorio de pictogramas creado:', uploadsDir);
+}
 
 // Configuración de multer
 const storage = multer.diskStorage({

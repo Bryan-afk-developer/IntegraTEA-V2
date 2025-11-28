@@ -1,4 +1,7 @@
 <div class="dashboard-container fade-in">
+  <!-- Ad Banner Superior -->
+  <app-ad-banner size="horizontal"></app-ad-banner>
+
   <div class="welcome-banner">
     <h1>¡Hola de nuevo! 👋</h1>
     <p>Aquí tienes un resumen de la actividad reciente.</p>
@@ -22,12 +25,19 @@
     </div>
   </div>
 
-  <div class="content-card mt-8">
-    <h2 class="content-card-title">Acciones Rápidas</h2>
-    <div class="actions-grid">
-      <button class="btn btn-primary" (click)="navigateToActivities()">Crear Nueva Actividad</button>
-      <button class="btn btn-secondary" (click)="navigateToUsers()">Gestionar Usuarios</button>
-      <button class="btn btn-danger" (click)="showNotImplemented()">Ver Reportes</button>
+  <div class="content-with-sidebar">
+    <div class="content-card mt-8">
+      <h2 class="content-card-title">Acciones Rápidas</h2>
+      <div class="actions-grid">
+        <button class="btn btn-primary" (click)="navigateToActivities()">Crear Nueva Actividad</button>
+        <button class="btn btn-secondary" (click)="navigateToUsers()">Gestionar Usuarios</button>
+        <button class="btn btn-danger" (click)="showNotImplemented()">Ver Reportes</button>
+        <button *ngIf="isPremium()" class="btn btn-warning" (click)="cancelSubscription()">Cancelar Suscripción
+          Premium</button>
+      </div>
     </div>
+
+    <!-- Ad Banner Lateral -->
+    <app-ad-banner size="vertical"></app-ad-banner>
   </div>
 </div>

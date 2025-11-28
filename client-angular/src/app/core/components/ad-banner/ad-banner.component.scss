@@ -1,0 +1,105 @@
+.ad-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 24px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 16px 0;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+  }
+
+  &__description {
+    font-size: 14px;
+    opacity: 0.95;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+  }
+
+  &__cta {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(1.05);
+    }
+  }
+
+  // Tamaño horizontal (por defecto)
+  &--horizontal {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Tamaño vertical (sidebar)
+  &--vertical {
+    max-width: 300px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // Tamaño cuadrado
+  &--square {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

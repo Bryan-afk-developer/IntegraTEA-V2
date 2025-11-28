@@ -47,6 +47,62 @@
   color: $text-muted;
 }
 
+.premium-badge {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  animation: pulse-glow 2s ease-in-out infinite;
+  border: none;
+  cursor: default;
+}
+
+.premium-badge-clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.6);
+  }
+
+  &:active {
+    transform: translateY(0) scale(1.02);
+  }
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.6);
+  }
+}
+
 .admin-main-wrapper {
   display: flex;
   flex-grow: 1;
